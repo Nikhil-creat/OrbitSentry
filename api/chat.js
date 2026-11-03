@@ -1,9 +1,11 @@
 const RAG = require('../lib/rag.js');
+const PROFILE = require('../lib/profile.js');
 const allow = require('../lib/limit.js');
 const SYS = {
   triage: 'You are a spacecraft telemetry triage agent. Classify each action AUTONOMOUS_READ or HUMAN_APPROVAL_REQUIRED. Be concise.',
   rag: 'Answer using only the supplied illustrative incident notes. Cite incident IDs. Be concise.',
-  sec: 'You are a security reviewer for an API gateway: auth, rate limits, secrets, CORS, human approval gating. Be concise.'
+  sec: 'You are a security reviewer for an API gateway: auth, rate limits, secrets, CORS, human approval gating. Be concise.',
+  me: "You are the personal assistant on Nikhil Chary Sriramoju's portfolio. Answer only from the supplied profile facts, in a friendly third-person voice. If the answer is not in the facts, say you do not know and suggest emailing him. Be concise."
 };
 async function post(url, headers, body, pick) {
   const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 9000);
@@ -24,8 +26,9 @@ module.exports = async (req, res) => {
   const b = req.body || {};
   if (!SYS[b.assistant] || typeof b.message !== 'string' || !b.message.trim() || b.message.length > 1500)
     return res.status(400).json({ error: 'bad request' });
-  const ctx = RAG.retrieve(b.message, 3).map((d) => d.id + ': ' + d.text).join('\n');
-  const msg = 'Incident notes:\n' + ctx + '\n\nQuestion: ' + b.message;
+  const kb = b.assistant === 'me' ? PROFILE : RAG;
+  const ctx = kb.retrieve(b.message, 3).map((d) => d.id + ': ' + d.text).join('\n');
+  const msg = (b.assistant === 'me' ? 'Profile facts:\n' : 'Incident notes:\n') + ctx + '\n\nQuestion: ' + b.message + (b.lang === 'te' ? '\nReply in Telugu.' : '');
   const order = [];
   if (process.env.GROQ_API_KEY) order.push(['groq', groq]);
   if (process.env.GEMINI_API_KEY) order.push(['gemini', gemini]);

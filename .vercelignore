@@ -1,13 +1,2 @@
-src
-tests
-docs
-scripts
-weights
-data
-config
-requirements.txt
-Dockerfile
-Dockerfile.web
-docker-compose.yml
-nginx.conf
-.github
+hf-space
+notebooks

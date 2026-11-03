@@ -54,3 +54,9 @@ Place Telemanom-layout arrays in `data/train/<CHAN>.npy` and `data/test/<CHAN>.n
 **Live demo:** https://orbit-sentry-wheat.vercel.app/workspace
 
 > Seed incident notes in the RAG store are illustrative, not official NASA records.
+
+## v4 additions
+- **Personal assistant:** `Nikhil's AI` tab in `/workspace` (and the floating button) answers about education, experience, certifications, projects and contact from `lib/profile.js`. Server-side via `/api/chat` (Groq/Gemini), local retrieval fallback offline.
+- **Telugu / English toggle** in the header (also sets the LLM reply language).
+- **PyTorch backend link:** deploy `hf-space/` to a Hugging Face Docker Space (`bash scripts/deploy_hf.sh <hf-user>`), then set `BACKEND_URL` and `BACKEND_API_KEY` in Vercel. The browser calls `/api/backend`, so the key never leaves the server.
+- **Real benchmark:** `bash scripts/get_nasa_data.sh && python -m src.evaluate --max-chans 20 --epochs 3` prints a Markdown table and writes `results.json`. Smoke test offline: `python -m src.make_synthetic && python -m src.evaluate --config config/smoke.yaml --epochs 1`.

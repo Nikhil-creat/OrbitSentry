@@ -1,0 +1,4 @@
+window: 50
+model: {filters: 8, hidden: 16, layers: 1, dropout: 0.0}
+threshold: {ewma_span: 30, z_min: 2.5, z_max: 10.0, prune_p: 0.13}
+latency_budget_ms: 200
