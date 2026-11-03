@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#E6EDF6">
+<title>OrbitSentry Workspace</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#020C21;--mut:#59627E;--cta:#0F1B31;--ac:#4A78B0;--g:rgba(255,255,255,.62)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,Helvetica,Arial,sans-serif;color:var(--ink);background:#E6EDF6 radial-gradient(1200px 600px at 80% -10%,#fff,transparent);line-height:1.5;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;background:rgba(255,255,255,.75);backdrop-filter:blur(20px);border-bottom:1px solid #fff}
+header b{font-weight:520;letter-spacing:-.03em;font-size:20px}nav{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;font-weight:500}nav a{color:#202940;text-decoration:none}
+.btn{background:var(--cta);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.o{background:#fff;color:var(--cta);border:1px solid #cfd8e6}
+main{max-width:1060px;margin:auto;padding:0 18px}section{padding:44px 0}
+h1{font-size:clamp(38px,8vw,76px);font-weight:360;letter-spacing:-.035em;line-height:1}
+h2{font-size:clamp(26px,5vw,38px);font-weight:380;letter-spacing:-.03em;margin-bottom:6px}.sub{color:var(--mut);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--g);border:1px solid #fff;border-radius:24px;padding:18px;backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(28,52,92,.07)}
+.card h3{font-size:16px;font-weight:570;margin-bottom:6px}.card li{margin-left:16px;font-size:14px}.card p{font-size:14px}
+canvas{width:100%;height:160px;background:#0F1B31;border-radius:16px;display:block}
+.st{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.st span{padding:7px 12px;border-radius:12px;background:#fff;font-size:13px;opacity:.45}.st span.on{opacity:1;background:var(--cta);color:#fff}
+.bar{height:8px;border-radius:9px;background:var(--ac);margin:3px 0 8px;transition:width .4s}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.tabs button{border:1px solid #cfd8e6;background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;font-size:13px}.tabs button.on{background:var(--cta);color:#fff}
+#log{height:280px;overflow:auto;background:#fff;border-radius:16px;padding:12px;font-size:14px}.m{margin:6px 0;white-space:pre-wrap}.m.u{text-align:right;color:var(--ac)}.m.a{color:#202940}
+.row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}input,select{flex:1;min-width:120px;padding:10px 12px;border-radius:12px;border:1px solid #cfd8e6;font:inherit;font-size:14px;background:#fff}
+.warn{background:#FFF4E0;border-radius:16px;padding:14px;font-size:14px}.cred b{font-weight:570}
+footer{background:var(--cta);color:#cfd8e6;padding:30px 18px;margin-top:30px;font-size:13px}footer .in{max-width:1060px;margin:auto;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap}footer a{color:#fff}
+[data-theme=dark]{--ink:#e8eefb;--mut:#9aa8c5;--g:rgba(20,30,52,.7)}[data-theme=dark] body{background:#0a1224}[data-theme=dark] header{background:rgba(10,18,36,.8);border-color:#1c2a48}[data-theme=dark] nav a{color:#cfd8e6}[data-theme=dark] .st span,[data-theme=dark] #log,[data-theme=dark] input,[data-theme=dark] select,[data-theme=dark] .tabs button{background:#16223b;color:#e8eefb;border-color:#26365a}[data-theme=dark] .btn.o{background:#16223b;color:#e8eefb;border-color:#26365a}[data-theme=dark] .m.a{color:#e8eefb}[data-theme=dark] .card{border-color:#1c2a48}[data-theme=dark] .warn{color:#020C21}textarea{width:100%;min-height:90px;padding:10px;border-radius:12px;border:1px solid #cfd8e6;font:13px monospace;background:#fff}[data-theme=dark] textarea{background:#16223b;color:#e8eefb;border-color:#26365a}.ev{font-size:13px;margin:4px 0}
+pre{background:#0F1B31;color:#cfe3ff;padding:12px;border-radius:12px;overflow:auto;font-size:12px;margin:8px 0 4px}details{margin:8px 0;font-size:14px}summary{cursor:pointer;font-weight:570}.flow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px}.flow span{background:#fff;padding:7px 11px;border-radius:12px}[data-theme=dark] .flow span{background:#16223b}
+</style><link rel="manifest" href="manifest.webmanifest"><script src="lib/threshold.js"></script></head><body>
+<header><b>OrbitSentry</b><nav><a href="index.html">Home</a><a href="#detect">Detect</a><a href="#agent">Agent</a><a href="#analyze">Analyzer</a><a href="#assist">Assistants</a><a href="#work">Projects</a><a href="#docs">Docs</a><a href="#sec">Security</a><a href="#cred">Credentials</a></nav><span><button class="btn o" id="th" aria-label="Toggle theme">◐</button> <a class="btn" href="https://github.com/Nikhil-creat/orbitsentry">GitHub</a></span></header>
+<main>
+<section><p class="sub">NASA SMAP + MSL telemetry intelligence</p><h1>Detect. Diagnose.<br>Human-approve.</h1><p class="sub" style="margin-top:14px;max-width:560px">CNN-BiLSTM anomaly detection, explainable attribution, RAG incident recall and an agentic triage loop where risky actions always wait for a human.</p><a class="btn" href="#detect">Run live demo</a> <a class="btn o" href="#assist">Talk to assistants</a></section>
+
+<section id="detect"><h2>Detection + XAI</h2><p class="sub">Browser simulation of the EWMA dynamic threshold (the real PyTorch model lives in <code>src/</code>).</p>
+<div class="grid"><div class="card" style="grid-column:1/-1"><canvas id="cv" width="900" height="160"></canvas><div class="row"><select id="ch"><option>SMAP-P1</option><option>MSL-M6</option><option>SMAP-A4</option></select><button class="btn" onclick="pend=16">Inject anomaly</button><button class="btn o" onclick="triage()">Run triage</button></div><p id="status" style="margin-top:8px;font-size:14px">Streaming…</p></div>
+<div class="card"><h3>Channel attribution (Integrated Gradients style)</h3><div id="attr"></div></div>
+<div class="card"><h3>CNN-BiLSTM</h3><ul><li>Conv1D kernels 3 / 5 / 7</li><li>2-layer Bi-LSTM, 80 units, dropout 0.3</li><li>Window L=250, EWMA span 30</li><li>Threshold 2.5σ–10σ, label-free; prune under 13% drop-off</li></ul></div></div></section>
+
+<section id="analyze"><h2>Telemetry analyzer</h2><p class="sub">Paste numbers or upload a CSV (first numeric column). Runs the EWMA dynamic-threshold + pruning pipeline in your browser, or via <code>/api/detect</code> when deployed.</p>
+<div class="card"><textarea id="raw" placeholder="1.02, 0.98, 1.01 ... (at least 60 values)"></textarea>
+<div class="row"><input type="file" id="file" accept=".csv,.txt"><button class="btn o" onclick="sample()">Load sample</button><button class="btn" onclick="analyze()">Analyze</button><button class="btn o" onclick="toTriage()">Triage first event</button><button class="btn o" onclick="report()">Export report</button></div>
+<canvas id="cv2" width="900" height="160" style="margin-top:10px"></canvas><div id="evs" style="margin-top:8px"></div></div></section>
+<section id="agent"><h2>Agentic triage</h2><p class="sub">LangGraph state machine: ingest → RAG → hypothesis → action router.</p>
+<div class="card"><div class="st" id="st"><span>1 Ingest + XAI</span><span>2 RAG retrieve</span><span>3 Root cause</span><span>4 Action router</span></div><div id="tout" style="font-size:14px">Trigger an anomaly, then press “Run triage”.</div></div></section>
+
+<section id="assist"><h2>Multi-assistant chat</h2><p class="sub">Three specialists. Works offline with local RAG; add a Groq or Gemini key for LLM answers (kept in memory only, never stored).</p>
+<div class="card"><div class="tabs" id="tabs"></div><div id="log"></div>
+<div class="row"><input id="q" placeholder="Ask about an anomaly, incident or security…"><button class="btn" onclick="send()">Send</button></div>
+<div class="row"><select id="prov"><option value="groq">Groq (llama-3.3-70b)</option><option value="gemini">Gemini 1.5 Flash</option></select><input id="key" type="password" placeholder="Optional API key" autocomplete="off"></div></div></section>
+
+<section id="docs"><h2>Architecture, API &amp; Docker</h2><div class="card"><div class="flow"><span>Telemetry</span>→<span>Window 250</span>→<span>CNN 3/5/7</span>→<span>BiLSTM 2×80</span>→<span>EWMA + threshold</span>→<span>Pruning</span>→<span>LangGraph triage</span>→<span>Human approval</span></div></div>
+<div class="grid" style="margin-top:14px"><div class="card"><h3>Run with Docker</h3><pre><code>cp .env.example .env
+docker compose up --build
+# web :8080  api :8000  qdrant :6333  grafana :3000</code></pre><button class="btn o" onclick="cp(this)">Copy</button></div>
+<div class="card"><h3>Call the API</h3><pre><code>curl -X POST localhost:8000/api/v1/detect \
+ -H "x-api-key: change-me-1" \
+ -H "content-type: application/json" \
+ -d '{"channel":"P-1","window":[[0.1,0],[0.2,0]],"observed":0.9}'</code></pre><button class="btn o" onclick="cp(this)">Copy</button></div>
+<div class="card"><h3>Train on NASA data</h3><pre><code>python -m src.train --chan P-1 --epochs 5
+echo WEIGHTS_PATH=weights/P-1.pt &gt;&gt; .env</code></pre><button class="btn o" onclick="cp(this)">Copy</button></div></div>
+<div class="card" style="margin-top:14px"><h3>FAQ</h3><details><summary>Is the detection on this page the real model?</summary><p>No. The browser uses an EWMA baseline. The PyTorch model runs in the Docker backend after you train it.</p></details><details><summary>Where do my API keys go?</summary><p>Vercel environment variables for the hosted site, or .env for Docker. Never commit them.</p></details><details><summary>Why human approval?</summary><p>Throttling or isolating spacecraft subsystems is irreversible enough that a person must confirm it.</p></details></div></section>
+<section id="sec"><h2>Security, Docker &amp; limits</h2><div class="grid">
+<div class="card"><h3>Security</h3><ul><li>API-key auth, token-bucket rate limit</li><li>CORS isolation, input validation (pydantic)</li><li>Payload dedupe (idempotency)</li><li>Secrets via env / Docker secrets; never in repo</li><li>HITL for throttle / isolation actions</li></ul></div>
+<div class="card"><h3>Reliability &amp; Docker</h3><ul><li>200 ms budget then Z-score fallback</li><li>Multi-stage Dockerfile, non-root user</li><li>Compose: API + Qdrant + Grafana + nginx</li></ul></div>
+<div class="card"><h3>Limitations</h3><p class="warn">The website demo is simulated. The Python model ships untrained: you must train on NASA SMAP/MSL data. Thresholds vary per channel, LLM hypotheses must be verified, in-memory rate limiting suits one instance, and this is not flight-qualified software.</p></div></div></section>
+
+<section id="cred"><h2>Credentials</h2><div class="grid cred">
+<div class="card"><h3>Nikhil Chary Sriramoju</h3><p>B.Tech CSE, Vaagdevi College of Engineering (2023–2027)<br>Thorrur, Telangana, India</p><div class="row"><a class="btn o" href="https://github.com/Nikhil-creat">GitHub</a><a class="btn o" href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a">LinkedIn</a></div></div>
+<div class="card"><h3>Experience</h3><ul><li><b>ML Engineer Intern</b>, Yuva Intern (NSDC), Aug–Sep 2026</li><li><b>Data Analytics Intern</b>, Thiranex, Jul–Aug 2026</li></ul></div>
+<div class="card"><h3>Certifications</h3><ul><li>NASSCOM / Skill India: AI-Data Engineering &amp; Cloud Infrastructure Analyst</li><li>IBM SkillsBuild: AI Fundamentals</li><li>Reliance Foundation: AI/ML Engineer Foundation</li></ul></div></div></section>
+<section id="work"><h2>Projects &amp; skills</h2><div class="grid cred">
+<div class="card"><h3>Shipped projects</h3><ul><li><a href="https://github.com/Nikhil-creat/AssignmentWriter">AssignmentWriter</a>: exam-answer generator (Groq)</li><li><a href="https://github.com/Nikhil-creat/voyagr">Voyagr</a>: AI trip planner PWA</li><li><a href="https://github.com/Nikhil-creat/kv-freight">KV Freight</a>: scroll-hero site with AI copilot</li><li><a href="https://github.com/Nikhil-creat/resume-reviewer-pro">Resume Reviewer Pro</a></li><li><a href="https://github.com/Nikhil-creat/voice-assistant">Voice Assistant</a></li><li><a href="https://github.com/Nikhil-creat/semanticache">Semanticache</a></li></ul></div>
+<div class="card"><h3>Skills on show here</h3><ul><li>PyTorch: CNN + Bi-LSTM, Integrated Gradients</li><li>Agentic AI: LangGraph, HITL routing</li><li>RAG: Qdrant, cosine retrieval</li><li>APIs: FastAPI, Vercel serverless, rate limiting</li><li>DevOps: multi-stage Docker, compose, PWA</li></ul></div>
+<div class="card"><h3>Open to work</h3><p>Final-year CSE student building ML and data products. Email: <a href="mailto:sriramojunikhil66@gmail.com">sriramojunikhil66@gmail.com</a></p></div></div></section>
+</main>
+<footer><div class="in"><div><b style="color:#fff">OrbitSentry</b><br>Built by Nikhil Chary Sriramoju</div><div><a href="index.html">Home</a> · <a href="#detect">Detect</a> · <a href="#assist">Assistants</a> · <a href="https://github.com/Nikhil-creat/orbitsentry">Source</a></div><div>Not for flight operations. Demo data is synthetic.</div></div></footer>
+<script>
+const $=s=>document.querySelector(s);
+const KB=[["SMAP-P1","Gradual thermal sensor drift slow offset no command correlation. Recalibrate, cross-check redundant sensor."],["MSL-M6","Power rail transient abrupt voltage dip bus after payload command. Isolate load, check battery state."],["SMAP-A4","Gyro noise burst high variance attitude jitter. Reaction wheel desaturation, filter reset."],["MSL-T2","Radio link dropout telemetry gaps stale values. Switch antenna, retry downlink window."]];
+const vec=t=>{const m={};(t.toLowerCase().match(/[a-z0-9]+/g)||[]).forEach(w=>m[w]=(m[w]||0)+1);return m};
+const cos=(a,b)=>{let d=0,x=0,y=0;for(const k in a){x+=a[k]**2;if(b[k])d+=a[k]*b[k]}for(const k in b)y+=b[k]**2;return d/(Math.sqrt(x*y)||1)};
+const retrieve=(q,k=2)=>KB.map(d=>({id:d[0],t:d[1],s:cos(vec(q),vec(d[0]+' '+d[1]))})).sort((a,b)=>b.s-a.s).slice(0,k);
+let sig=[],ew=[],t=0,pend=0,N=180,hit=false,attr={telemetry:.7,cmd_1:.2,cmd_2:.1};
+function step(){t++;let v=Math.sin(t/9)+.25*Math.sin(t/3.1)+(Math.random()-.5)*.12;if(pend>0){v+=1.8;pend--}
+const er=Math.abs(v-(sig.length?sig[sig.length-1]:v));sig.push(v);const a=2/31;ew.push(ew.length?a*er+(1-a)*ew[ew.length-1]:er);
+if(sig.length>N){sig.shift();ew.shift()}}
+function draw(){const c=$('#cv'),g=c.getContext('2d'),w=c.width,h=c.height;g.clearRect(0,0,w,h);
+const m=ew.reduce((a,b)=>a+b,0)/ew.length,s=Math.sqrt(ew.reduce((a,b)=>a+(b-m)**2,0)/ew.length),th=m+3*s;
+g.strokeStyle='#7fb0e8';g.beginPath();sig.forEach((v,i)=>{const x=i/N*w,y=h/2-v*30;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+g.strokeStyle='#ffb347';g.beginPath();ew.forEach((v,i)=>{const x=i/N*w,y=h-10-v*80;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+g.setLineDash([5,5]);g.strokeStyle='#ff6b6b';g.beginPath();g.moveTo(0,h-10-th*80);g.lineTo(w,h-10-th*80);g.stroke();g.setLineDash([]);
+hit=ew.length>40&&ew[ew.length-1]>th;
+if(hit){const r=Math.random();attr={telemetry:.55+r*.2,cmd_1:.25*Math.random()+.1,cmd_2:.15*Math.random()+.05}}
+$('#status').textContent=hit?'ANOMALY on '+$('#ch').value+' → run triage':'Nominal';$('#status').style.color=hit?'#b3261e':'#202940';
+$('#attr').innerHTML=Object.entries(attr).map(([k,v])=>`<small>${k} ${(v*100|0)}%</small><div class="bar" style="width:${v*100}%"></div>`).join('')}
+setInterval(()=>{step();draw()},70);
+let last=null;
+function triage(){const ch=$('#ch').value;const top=Object.entries(attr).sort((a,b)=>b[1]-a[1])[0][0];
+const q=ch+' anomaly '+(hit?'abrupt spike':'drift')+' drivers '+top;const m=retrieve(q);const hyp=m[0].id+': '+m[0].t;
+const acts=hyp.split(/[.;]/).slice(1).map(s=>s.trim()).filter(Boolean).map(a=>({a,h:/isolat|throttle|shutdown/i.test(a)}));acts.push({a:'log, alert, reroute metrics',h:false});
+last={ch,m,hyp,acts};[...$('#st').children].forEach((e,i)=>setTimeout(()=>e.classList.add('on'),i*350));
+setTimeout(()=>{$('#tout').innerHTML=`<p><b>Match:</b> ${m.map(x=>x.id+' ('+x.s.toFixed(2)+')').join(', ')}</p><p><b>Hypothesis:</b> ${hyp}</p>`+acts.map((x,i)=>x.h?`<p>⚠ <b>HUMAN_APPROVAL_REQUIRED:</b> ${x.a} <button class="btn o" onclick="this.outerHTML='✔ approved by operator'">Approve</button></p>`:`<p>✓ <b>AUTONOMOUS_READ:</b> ${x.a}</p>`).join('')},1500);
+setTimeout(()=>[...$('#st').children].forEach(e=>e.classList.remove('on')),1700)}
+const AS={triage:["Triage Agent","You are a spacecraft telemetry triage agent. Classify each action AUTONOMOUS_READ or HUMAN_APPROVAL_REQUIRED. Be concise."],rag:["RAG Analyst","You answer using the given historical NASA-style incidents only. Cite incident IDs."],sec:["Security Officer","You are a security reviewer for an API gateway: auth, rate limit, secrets, CORS, HITL. Be concise."]};
+let cur='triage';
+$('#tabs').innerHTML=Object.entries(AS).map(([k,v])=>`<button data-k="${k}" onclick="cur='${k}';tabs()">${v[0]}</button>`).join('');
+function tabs(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===cur));add('a',AS[cur][0]+' ready.')}
+function add(c,t){const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('#log').appendChild(d);$('#log').scrollTop=1e9}
+async function llm(sys,msg){const k=$('#key').value.trim();if(!k)return null;try{if($('#prov').value==='groq'){const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:sys},{role:'user',content:msg}]})});return(await r.json()).choices[0].message.content}
+const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+encodeURIComponent(k),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:sys+'\n\n'+msg}]}]})});return(await r.json()).candidates[0].content.parts[0].text}catch(e){return null}}
+function local(q){const m=retrieve(q);if(cur==='rag')return 'Closest incidents:\n'+m.map(x=>`• ${x.id} (${x.s.toFixed(2)}): ${x.t}`).join('\n');
+if(cur==='triage')return last?`Latest triage on ${last.ch}: ${last.hyp}\nRisky steps need human approval.`:'No anomaly triaged yet. Inject one above and run triage.';
+return /key|secret/i.test(q)?'Keep keys in env vars or Docker secrets; rotate them; never commit .env.':/rate|dos/i.test(q)?'Token bucket per client: capacity 20, refill 5/s, 429 with Retry-After.':'Controls: API-key auth, rate limit, CORS allow-list, pydantic validation, dedupe, non-root container, HITL gating.'}
+async function send(){const q=$('#q').value.trim();if(!q)return;$('#q').value='';add('u',q);
+const ctx=retrieve(q).map(x=>x.id+': '+x.t).join('\n');let a=null;if(location.protocol.startsWith('http')){try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assistant:cur,message:q,context:ctx})});if(r.ok)a=(await r.json()).reply}catch(e){}}if(!a)a=await llm(AS[cur][1],'Incidents:\n'+ctx+'\n\nQuestion: '+q);add('a',a||local(q))}
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter')send()});tabs();
+try{const sv=localStorage.getItem('th');if(sv)document.documentElement.dataset.theme=sv}catch(e){}
+$('#th').onclick=()=>{const d=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=d;try{localStorage.setItem('th',d)}catch(e){}};
+let res=null,vals=[];
+function parse(t){return t.split(/[\s,;]+/).map(Number).filter(x=>isFinite(x)&&x!==undefined)}
+function sample(){const a=[];for(let i=0;i<500;i++){let v=Math.sin(i/12)+(Math.random()-.5)*.1;if(i>=300&&i<325)v+=2.2;a.push(+v.toFixed(3))}$('#raw').value=a.join(', ')}
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const rows=String(r.result).split(/\r?\n/).map(l=>l.split(',').map(Number).find(x=>isFinite(x)&&x!==0||x===0)).filter(x=>x!==undefined&&isFinite(x));$('#raw').value=rows.join(', ')};r.readAsText(f)};
+async function analyze(){vals=parse($('#raw').value);if(vals.length<60){$('#evs').textContent='Need at least 60 numeric values.';return}
+res=TH.detect(vals);if(location.protocol.startsWith('http')){try{const r=await fetch('/api/detect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:vals})});if(r.ok){const j=await r.json();res.events=j.events;res.threshold=j.threshold}}catch(e){}}
+const c=$('#cv2'),g=c.getContext('2d'),w=c.width,h=c.height,n=vals.length,mx=Math.max(...res.smoothed,res.threshold)*1.1||1;g.clearRect(0,0,w,h);
+g.fillStyle='rgba(255,107,107,.25)';res.events.forEach(e=>g.fillRect(e[0]/n*w,0,Math.max(3,(e[1]-e[0]+1)/n*w),h));
+g.strokeStyle='#ffb347';g.beginPath();res.smoothed.forEach((v,i)=>{const x=i/n*w,y=h-8-v/mx*(h-16);i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+g.setLineDash([5,5]);g.strokeStyle='#ff6b6b';const ty=h-8-res.threshold/mx*(h-16);g.beginPath();g.moveTo(0,ty);g.lineTo(w,ty);g.stroke();g.setLineDash([]);
+$('#evs').innerHTML=`<div class="ev"><b>${res.events.length}</b> event(s), threshold ${res.threshold.toFixed(4)}, ${n} points</div>`+res.events.map((e,i)=>`<div class="ev">#${i+1}: samples ${e[0]}–${e[1]}</div>`).join('')}
+function toTriage(){if(!res||!res.events.length){$('#evs').textContent='Run Analyze first (needs at least one event).';return}hit=true;$('#ch').insertAdjacentHTML('afterbegin','<option>UPLOAD</option>');$('#ch').value='UPLOAD';triage();location.hash='#agent'}
+function report(){if(!res){$('#evs').textContent='Run Analyze first.';return}const md=`# OrbitSentry incident report\nGenerated: ${new Date().toISOString()}\n\n- Points: ${vals.length}\n- Threshold: ${res.threshold.toFixed(4)}\n- Events: ${res.events.map(e=>e.join('-')).join(', ')||'none'}\n`+(last?`\n## Triage (${last.ch})\nHypothesis: ${last.hyp}\n`+last.acts.map(a=>`- ${a.h?'HUMAN_APPROVAL_REQUIRED':'AUTONOMOUS_READ'}: ${a.a}`).join('\n'):'\n(No triage run yet.)')+'\n\nSimulated statistical baseline, not the trained CNN-BiLSTM.\n';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));a.download='incident-report.md';a.click()}
+function cp(b){const t=b.previousElementSibling.innerText;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='Copied'}).catch(()=>{b.textContent='Select + copy'});setTimeout(()=>b.textContent='Copy',1500)}
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>

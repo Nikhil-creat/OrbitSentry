@@ -1,0 +1,7 @@
+.git
+data
+weights
+node_modules
+__pycache__
+.env
+*.zip
