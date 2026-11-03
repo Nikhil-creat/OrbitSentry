@@ -1,4 +1,4 @@
-const C = 'av-v2', A = ['workspace.html', 'index.html', 'lib/threshold.js', 'icon.svg'];
+const C = 'av-v3', A = ['workspace.html', 'index.html', 'lib/threshold.js', 'lib/rag.js', 'icon.svg'];
 self.addEventListener('install', (e) => e.waitUntil(caches.open(C).then((c) => c.addAll(A)).then(() => self.skipWaiting())));
 self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then((k) => Promise.all(k.filter((x) => x !== C).map((x) => caches.delete(x))))));
 self.addEventListener('fetch', (e) => {

@@ -51,4 +51,6 @@ Place Telemanom-layout arrays in `data/train/<CHAN>.npy` and `data/test/<CHAN>.n
 ## One-command Termux push
 `bash scripts/termux_push.sh orbitsentry`
 
-**Live demo:** https://YOUR-DOMAIN.vercel.app/workspace
+**Live demo:** https://orbit-sentry-wheat.vercel.app/workspace
+
+> Seed incident notes in the RAG store are illustrative, not official NASA records.

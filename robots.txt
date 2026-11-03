@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://orbit-sentry-wheat.vercel.app/sitemap.xml
